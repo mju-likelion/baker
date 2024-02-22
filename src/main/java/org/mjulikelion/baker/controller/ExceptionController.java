@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,6 +21,19 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Slf4j
 @RestControllerAdvice
 public class ExceptionController {
+
+    //MissingServletRequestParameterException 예외를 처리하는 핸들러(필수 파라미터가 누락된 경우)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ResponseDto<Void>> handleMissingServletRequestParameterException(
+            MissingServletRequestParameterException missingServletRequestParameterException) {
+        log.error("MissingServletRequestParameterException: {}", missingServletRequestParameterException.getMessage());
+        ErrorCode errorCode = ErrorCode.PARAM_NOT_FOUND_ERROR;
+        String code = errorCode.getCode();
+        String message = errorCode.getMessage() + " : " + missingServletRequestParameterException.getParameterName();
+        return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.BAD_REQUEST);
+    }
+
     //MethodArgumentNotValidException 예외를 처리하는 핸들러(Body(dto)의 Validation에 실패한 경우)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
