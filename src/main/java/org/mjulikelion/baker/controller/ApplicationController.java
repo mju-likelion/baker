@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplicationController {
     private final ApplicationService applicationService;
 
-    @GetMapping("/{part}")
+    @GetMapping()
     public ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getApplications(
             @RequestParam(value = "part") String part,
             @RequestParam(value = "pageNum") int pageNum) {
