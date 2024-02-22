@@ -3,6 +3,7 @@ package org.mjulikelion.baker.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
@@ -25,7 +26,7 @@ public class Major {
     @Column(nullable = false)
     private byte sequence;
 
-    @OneToMany(mappedBy = "major")
+    @OneToMany(mappedBy = "major", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Application> applications;
 }
