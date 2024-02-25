@@ -15,8 +15,21 @@ public enum ErrorCode {
     INVALID_REQUEST_FORMAT_ERROR("4000", "유효하지 않은 Body 형식입니다."),//요청 형식이 잘못됨
     INVALID_PART_ERROR("4001", "유효하지 않은 파트입니다."),//유효하지 않은 파트
     INVALID_PAGE_ERROR("4002", "페이지가 유효하지 않습니다."),//페이지가 유효하지 않음
-    PARAM_NOT_FOUND_ERROR("4003", "필수 파라미터가 누락되었습니다.");//필수 파라미터가 누락됨
-
+    PARAM_NOT_FOUND_ERROR("4003", "필수 파라미터가 누락되었습니다."),//필수 파라미터가 누락됨
+    //인증/권한 오류들
+    AUTHENTICATION_ERROR("4010", "인증 오류입니다."),//인증 오류
+    AUTHENTICATION_NOT_FOUND_ERROR("4011", "인증 정보를 찾을 수 없습니다."),//인증 정보를 찾을 수 없음
+    UNAUTHORIZED_ERROR("4030", "권한이 없습니다."),//권한이 없음
+    ACCESS_DENIED_ERROR("4031", "접근이 거부되었습니다."),//접근이 거부됨
+    //JWT 토큰 에러
+    JWT_TOKEN_ERROR("8000", "JWT 권한 정보 검증 오류."),//JWT 토큰 에러
+    JWT_TOKEN_PROVIDER_ERROR("8001", "JWT 토큰 제공자 오류."),//JWT 토큰 제공자 에러
+    JWT_INVALID_TOKEN_ERROR("8002", "유효하지 않은 JWT 토큰입니다."),//유효하지 않은 JWT 토큰
+    JWT_EXPIRED_TOKEN_ERROR("8003", "만료된 JWT 토큰입니다."),//만료된 JWT 토큰
+    JWT_UNSUPPORTED_TOKEN_ERROR("8004", "지원되지 않는 JWT 토큰입니다."),//지원되지 않는 JWT 토큰
+    JWT_CLAIMS_STRING_ERROR("8005", "JWT 클레임 문자열이 비어있습니다."),//JWT 클레임 문자열이 비어있음
+    JWT_UNKNOWN_ERROR("8006", "알 수 없는 JWT 토큰 에러입니다."),//알 수 없는 JWT 토큰 에러
+    JWT_NOT_FOUND_ERROR("8007", "JWT 토큰을 찾을 수 없습니다.");//JWT 토큰을 찾을 수 없음
 
     private final String code;
     private final String message;
