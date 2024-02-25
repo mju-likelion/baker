@@ -1,10 +1,15 @@
 package org.mjulikelion.baker.controller;
 
+import static org.mjulikelion.baker.constant.EtcConstant.COLON;
+import static org.mjulikelion.baker.dto.response.ResponseDto.getFromCustomException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.mjulikelion.baker.dto.response.ResponseDto;
 import org.mjulikelion.baker.errorcode.ErrorCode;
 import org.mjulikelion.baker.errorcode.ValidationErrorCode;
+import org.mjulikelion.baker.exception.AuthenticationException;
 import org.mjulikelion.baker.exception.InvalidDataException;
+import org.mjulikelion.baker.exception.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -30,7 +35,7 @@ public class ExceptionController {
         log.error("MissingServletRequestParameterException: {}", missingServletRequestParameterException.getMessage());
         ErrorCode errorCode = ErrorCode.PARAM_NOT_FOUND_ERROR;
         String code = errorCode.getCode();
-        String message = errorCode.getMessage() + " : " + missingServletRequestParameterException.getParameterName();
+        String message = errorCode.getMessage() + COLON + missingServletRequestParameterException.getParameterName();
         return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.BAD_REQUEST);
     }
 
@@ -48,7 +53,7 @@ public class ExceptionController {
         }
         ValidationErrorCode validationErrorCode = ValidationErrorCode.resolveAnnotation(fieldError.getCode());
         String code = validationErrorCode.getCode();
-        String message = validationErrorCode.getMessage() + " : " + fieldError.getDefaultMessage();
+        String message = validationErrorCode.getMessage() + COLON + fieldError.getDefaultMessage();
         return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.BAD_REQUEST);
     }
 
@@ -60,7 +65,7 @@ public class ExceptionController {
         log.error("HandlerMethodValidationException: {}", handlerMethodValidationException.getMessage());
         ValidationErrorCode errorCode = ValidationErrorCode.VALIDATION;
         String code = errorCode.getCode();
-        String message = errorCode.getMessage() + " : "
+        String message = errorCode.getMessage() + COLON
                 + handlerMethodValidationException.getDetailMessageArguments()[0].toString();
         return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.BAD_REQUEST);
     }
@@ -73,7 +78,7 @@ public class ExceptionController {
         log.error("HttpMessageNotReadableException: {}", httpMessageNotReadableException.getMessage());
         ErrorCode errorCode = ErrorCode.INVALID_REQUEST_FORMAT_ERROR;
         String code = errorCode.getCode();
-        String message = errorCode.getMessage() + " : " + httpMessageNotReadableException.getMessage();
+        String message = errorCode.getMessage() + COLON + httpMessageNotReadableException.getMessage();
         return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.BAD_REQUEST);
     }
 
@@ -108,7 +113,7 @@ public class ExceptionController {
         log.error("InternalServerException: {}", exception.getMessage());
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         String code = errorCode.getCode();
-        String message = errorCode.getMessage() + " : " + exception.getClass();
+        String message = errorCode.getMessage() + COLON + exception.getClass();
         return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -117,9 +122,26 @@ public class ExceptionController {
     @ExceptionHandler(InvalidDataException.class)
     public ResponseEntity<ResponseDto<Void>> handleInvalidDataException(InvalidDataException invalidDataException) {
         log.error("InvalidDataException: {}", invalidDataException.getMessage());
-        ErrorCode errorCode = invalidDataException.getErrorCode();
-        String code = errorCode.getCode();
-        String message = errorCode.getMessage();
-        return new ResponseEntity<>(ResponseDto.res(code, message), HttpStatus.BAD_REQUEST);
+        ResponseDto<Void> responseDto = getFromCustomException(invalidDataException);
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    // JwtException 예외를 처리하는 핸들러(Jwt 토큰이 유효하지 않은 경우)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ResponseDto<Void>> handleJwtException(JwtException jwtException) {
+        log.error("JwtException: {}", jwtException.getMessage());
+        ResponseDto<Void> responseDto = getFromCustomException(jwtException);
+        return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
+    }
+
+    // AuthenticationException 예외를 처리하는 핸들러(인증에 실패한 경우)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ResponseDto<Void>> handleAuthenticationException(
+            AuthenticationException authenticationException) {
+        log.error("AuthenticationException: {}", authenticationException.getMessage());
+        ResponseDto<Void> responseDto = getFromCustomException(authenticationException);
+        return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
     }
 }

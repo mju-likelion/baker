@@ -1,11 +1,11 @@
-package org.mjulikelion.baker.Service;
+package org.mjulikelion.baker.service.application;
 
 import org.mjulikelion.baker.dto.response.ResponseDto;
 import org.mjulikelion.baker.dto.response.application.ApplicationPageGetResponseData;
 import org.springframework.http.ResponseEntity;
 
 
-public interface ApplicationService {
+public interface ApplicationQueryService {
 
     ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getApplications(String part, int pageNum);
 }

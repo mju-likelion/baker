@@ -1,9 +1,12 @@
 package org.mjulikelion.baker.dto.response;
 
+import static org.mjulikelion.baker.constant.EtcConstant.COLON;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.mjulikelion.baker.exception.CustomException;
 import org.springframework.http.HttpStatusCode;
 
 @Data
@@ -45,5 +48,13 @@ public class ResponseDto<T> {
                 .statusCode(String.valueOf(statusCode.value()))
                 .message(resultMsg)
                 .build();
+    }
+
+    public static ResponseDto<Void> getFromCustomException(CustomException e) {
+        if (e.getMessage() == null) {
+            return ResponseDto.res(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+        }
+        return ResponseDto.res(e.getErrorCode().getCode(),
+                e.getErrorCode().getMessage() + COLON + e.getMessage());
     }
 }
