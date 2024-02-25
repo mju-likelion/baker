@@ -1,4 +1,4 @@
-package org.mjulikelion.baker.Service;
+package org.mjulikelion.baker.service.application;
 
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ApplicationServiceImpl implements ApplicationService {
+public class ApplicationQueryServiceImpl implements ApplicationQueryService {
     private final ApplicationUtil applicationUtil;
 
     public ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getApplications(String part, int pageNum) {
