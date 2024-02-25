@@ -5,7 +5,7 @@ import static org.mjulikelion.baker.constant.SecurityConstant.ACCESS_TOKEN;
 import static org.mjulikelion.baker.constant.SecurityConstant.ALL_PATH;
 import static org.mjulikelion.baker.constant.SecurityConstant.CONTENT_TYPE;
 import static org.mjulikelion.baker.errorcode.ErrorCode.ACCESS_DENIED_ERROR;
-import static org.mjulikelion.baker.errorcode.ErrorCode.UNAUTHORIZED_ERROR;
+import static org.mjulikelion.baker.errorcode.ErrorCode.AUTHENTICATION_REQUIRED_ERROR;
 import static org.mjulikelion.baker.model.Role.ROLE_ADMIN;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +62,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationExceptionFilter, JwtFilter.class)
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(
-                                (request, response, authException) -> makeResponse(response, UNAUTHORIZED_ERROR)))
+                                (request, response, authException) -> makeResponse(response,
+                                        AUTHENTICATION_REQUIRED_ERROR)))
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.accessDeniedHandler(
                                 (request, response, accessDeniedException) -> makeResponse(response,
