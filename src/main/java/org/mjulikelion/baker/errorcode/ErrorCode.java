@@ -19,7 +19,7 @@ public enum ErrorCode {
     //인증/권한 오류들
     AUTHENTICATION_ERROR("4010", "인증 오류입니다."),//인증 오류
     AUTHENTICATION_NOT_FOUND_ERROR("4011", "인증 정보를 찾을 수 없습니다."),//인증 정보를 찾을 수 없음
-    UNAUTHORIZED_ERROR("4030", "권한이 없습니다."),//권한이 없음
+    AUTHENTICATION_REQUIRED_ERROR("4012", "로그인되어있지 않습니다"),//권한이 없음
     ACCESS_DENIED_ERROR("4031", "접근이 거부되었습니다."),//접근이 거부됨
     //JWT 토큰 에러
     JWT_TOKEN_ERROR("8000", "JWT 권한 정보 검증 오류."),//JWT 토큰 에러
