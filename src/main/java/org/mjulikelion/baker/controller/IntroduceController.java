@@ -10,17 +10,15 @@ import org.mjulikelion.baker.service.introduce.IntroduceQueryService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("introduce")
 public class IntroduceController {
     private final IntroduceQueryService introduceQueryService;
 
-    @GetMapping()
+    @GetMapping("/introduces")
     @Cacheable(value = "applicationByStudentId", key = "#studentId")
     public ResponseEntity<ResponseDto<IntroduceGetResponseData>> getStudentIntroduce(
             @RequestParam(value = "studentId")
