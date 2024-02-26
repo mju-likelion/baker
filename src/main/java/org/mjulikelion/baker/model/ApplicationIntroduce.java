@@ -26,7 +26,7 @@ public class ApplicationIntroduce {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id")
     private Application application;
 
