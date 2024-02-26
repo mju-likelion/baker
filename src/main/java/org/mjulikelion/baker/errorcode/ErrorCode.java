@@ -11,6 +11,8 @@ public enum ErrorCode {
     //잘못된 경로, 메소드 오류들
     METHOD_NOT_ALLOWED_ERROR("4050", "허용되지 않은 메소드 입니다."),//허용되지 않은 메소드
     NO_RESOURCE_ERROR("4040", "해당 리소스를 찾을 수 없습니다."),//리소스를 찾을 수 없음(잘못된 URI)
+    APPLICATION_NOT_FOUND_ERROR("4041", "해당 지원서가 존재하지 않습니다."),//지원서가 존재하지 않음
+    APPLICATION_INTRODUCE_NOT_FOUND_ERROR("4042", "해당 지원서에 자기소개가 존재하지 않습니다."),//자기소개가 존재하지 않음
     //잘못된 데이터 오류들
     INVALID_REQUEST_FORMAT_ERROR("4000", "유효하지 않은 Body 형식입니다."),//요청 형식이 잘못됨
     INVALID_PART_ERROR("4001", "유효하지 않은 파트입니다."),//유효하지 않은 파트
