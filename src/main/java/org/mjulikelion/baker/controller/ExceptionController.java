@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.mjulikelion.baker.dto.response.ResponseDto;
 import org.mjulikelion.baker.errorcode.ErrorCode;
 import org.mjulikelion.baker.errorcode.ValidationErrorCode;
+import org.mjulikelion.baker.exception.ApplicationIntroduceNotFoundException;
+import org.mjulikelion.baker.exception.ApplicationNotFoundException;
 import org.mjulikelion.baker.exception.AuthenticationException;
 import org.mjulikelion.baker.exception.InvalidDataException;
 import org.mjulikelion.baker.exception.JwtException;
@@ -143,5 +145,25 @@ public class ExceptionController {
         log.error("AuthenticationException: {}", authenticationException.getMessage());
         ResponseDto<Void> responseDto = getFromCustomException(authenticationException);
         return new ResponseEntity<>(responseDto, HttpStatus.UNAUTHORIZED);
+    }
+
+    //ApplicationNotFoundException 예외를 처리하는 핸들러(해당 지원서가 존재하지 않는 경우)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ApplicationNotFoundException.class)
+    public ResponseEntity<ResponseDto<Void>> handleApplicationNotFoundException(
+            ApplicationNotFoundException applicationNotFoundException) {
+        log.error("ApplicationNotFoundException: {}", applicationNotFoundException.getMessage());
+        ResponseDto<Void> responseDto = getFromCustomException(applicationNotFoundException);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+
+    //ApplicationIntroduceNotFoundException 예외를 처리하는 핸들러(해당 지원서에 자기소개가 존재하지 않는 경우)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ApplicationIntroduceNotFoundException.class)
+    public ResponseEntity<ResponseDto<Void>> handleApplicationIntroduceNotFoundException(
+            ApplicationIntroduceNotFoundException applicationIntroduceNotFoundException) {
+        log.error("ApplicationIntroduceNotFoundException: {}", applicationIntroduceNotFoundException.getMessage());
+        ResponseDto<Void> responseDto = getFromCustomException(applicationIntroduceNotFoundException);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
     }
 }
