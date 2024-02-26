@@ -65,7 +65,7 @@ public class Application {
     @CreatedDate
     private Date createdAt;
 
-    @OneToMany(mappedBy = "application", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "application", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ApplicationIntroduce> introduces;
 
     @OneToMany(mappedBy = "application", orphanRemoval = true, fetch = FetchType.LAZY)
