@@ -4,15 +4,17 @@ import static org.mjulikelion.baker.constant.SecurityConstant.ACCESS_TOKEN;
 import static org.mjulikelion.baker.constant.SecurityConstant.ROOT_PATH;
 import static org.mjulikelion.baker.errorcode.ErrorCode.AUTHENTICATION_ERROR;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.Duration;
 import org.mjulikelion.baker.dto.request.auth.AuthLoginRequestDto;
 import org.mjulikelion.baker.dto.response.ResponseDto;
 import org.mjulikelion.baker.exception.AuthenticationException;
 import org.mjulikelion.baker.util.security.JwtEncoder;
 import org.mjulikelion.baker.util.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.server.Session.Cookie;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -45,16 +47,17 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
             String jwtToken = jwtTokenProvider.generateToken(authentication).getAccessToken();
 
-            Cookie cookie = new Cookie(ACCESS_TOKEN,
-                    JwtEncoder.encodeJwtBearerToken(jwtToken));
-
-            cookie.setMaxAge(cookieMaxAge);
-            cookie.setHttpOnly(true);
-            cookie.setPath(ROOT_PATH);
-            response.addCookie(cookie);
+            ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, JwtEncoder.encodeJwtBearerToken(jwtToken))
+                    .secure(true)
+                    .sameSite(String.valueOf(Cookie.SameSite.LAX))
+                    .maxAge(Duration.ofMinutes(cookieMaxAge))
+                    .httpOnly(true)
+                    .path(ROOT_PATH)
+                    .build();
+            response.addHeader("Set-Cookie", cookie.toString());
         } catch (Exception e) {
             throw new AuthenticationException(AUTHENTICATION_ERROR, e.getMessage());
         }
-        return new ResponseEntity<>(ResponseDto.res(HttpStatus.OK, "OK"), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.res(HttpStatus.OK, "OK", null), HttpStatus.OK);
     }
 }
