@@ -12,7 +12,7 @@ import org.mjulikelion.baker.exception.AuthenticationException;
 import org.mjulikelion.baker.util.security.JwtEncoder;
 import org.mjulikelion.baker.util.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.server.Session.Cookie;
+import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +49,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
             ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, JwtEncoder.encodeJwtBearerToken(jwtToken))
                     .secure(true)
-                    .sameSite(String.valueOf(Cookie.SameSite.LAX))
+                    .sameSite(String.valueOf(SameSite.NONE))
                     .maxAge(Duration.ofMinutes(cookieMaxAge))
                     .httpOnly(true)
                     .path(ROOT_PATH)
