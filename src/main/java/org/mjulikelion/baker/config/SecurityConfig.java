@@ -19,6 +19,7 @@ import org.mjulikelion.baker.filter.JwtAuthenticationExceptionFilter;
 import org.mjulikelion.baker.filter.JwtFilter;
 import org.mjulikelion.baker.util.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -74,6 +75,8 @@ public class SecurityConfig {
                             .logoutSuccessHandler((request, response, authentication) -> {
                                 ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, "")
                                         .maxAge(ZERO)
+                                        .sameSite(String.valueOf(SameSite.NONE))
+                                        .secure(true)
                                         .path("/")
                                         .build();
                                 response.addHeader("Set-Cookie", cookie.toString());
