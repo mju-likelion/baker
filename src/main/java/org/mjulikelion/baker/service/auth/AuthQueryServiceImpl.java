@@ -53,6 +53,7 @@ public class AuthQueryServiceImpl implements AuthQueryService {
                     .maxAge(Duration.ofMillis(cookieMaxAge))
                     .httpOnly(true)
                     .path(ROOT_PATH)
+                    .domain("localhost")
                     .build();
             response.addHeader("Set-Cookie", cookie.toString());
         } catch (Exception e) {
