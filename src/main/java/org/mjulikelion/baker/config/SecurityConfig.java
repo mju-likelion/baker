@@ -9,7 +9,6 @@ import static org.mjulikelion.baker.errorcode.ErrorCode.AUTHENTICATION_REQUIRED_
 import static org.mjulikelion.baker.model.Role.ROLE_ADMIN;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -72,11 +72,11 @@ public class SecurityConfig {
                     logout
                             .logoutUrl(logoutUrl)
                             .logoutSuccessHandler((request, response, authentication) -> {
-                                Cookie cookie = new Cookie(ACCESS_TOKEN, null);
-                                cookie.setMaxAge(ZERO);
-                                cookie.setHttpOnly(true);
-                                cookie.setPath(ALL_PATH);
-                                response.addCookie(cookie);
+                                ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, "")
+                                        .maxAge(ZERO)
+                                        .path("/")
+                                        .build();
+                                response.addHeader("Set-Cookie", cookie.toString());
 
                                 this.makeResponse(response, HttpStatus.OK, "로그아웃 되었습니다.");
                             })
