@@ -48,6 +48,8 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
             ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, JwtEncoder.encodeJwtBearerToken(jwtToken))
                     .maxAge(Duration.ofMillis(cookieMaxAge))
+                    .secure(true)
+                    .sameSite("None")
                     .httpOnly(true)
                     .path(ROOT_PATH)
                     .build();
