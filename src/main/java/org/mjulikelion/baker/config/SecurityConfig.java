@@ -73,6 +73,8 @@ public class SecurityConfig {
                             .logoutUrl(logoutUrl)
                             .logoutSuccessHandler((request, response, authentication) -> {
                                 ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, "")
+                                        .secure(true)
+                                        .sameSite("None")
                                         .maxAge(ZERO)
                                         .path("/")
                                         .build();
