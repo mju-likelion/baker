@@ -53,7 +53,6 @@ public class AuthQueryServiceImpl implements AuthQueryService {
                     .sameSite("None").secure(true)
                     .httpOnly(true)
                     .path(ROOT_PATH)
-                    .domain("localhost")
                     .build();
             log.info("cookieString: {}", cookie);
 
