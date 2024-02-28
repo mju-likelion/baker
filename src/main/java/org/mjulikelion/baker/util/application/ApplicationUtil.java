@@ -36,9 +36,28 @@ public class ApplicationUtil {
         return this.applicationRepository.findAllByPart(partEnum, pageable);
     }
 
+    // 페이지네이션 처리된 지원서 데이터를 가져온다.(합격여부에 따른)
+    public Page<Application> getPageApplicationsByPassAndPart(boolean pass, String part, int pageNum) {
+        Part partEnum = Part.findBy(part.toUpperCase());
+        this.validatePageNumByPartAndPass(pass, partEnum, pageNum);
+        // 페이지네이션 처리
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Direction.ASC, order));
+        // 페이지네이션 처리된 데이터를 가져온다.
+        return this.applicationRepository.findAllByIsPassAndPart(pass, partEnum, pageable);
+    }
+
     // 페이지네이션 처리를 위한 유효성 검사
     private void validatePageNumByPart(Part part, int pageNum) {
         int totalPages = (int) Math.ceil((double) this.applicationRepository.countAllByPart(part) / pageSize);
+        if (pageNum < 0 || pageNum >= totalPages) {
+            throw new InvalidDataException(INVALID_PAGE_ERROR);
+        }
+    }
+
+    // 페이지네이션 처리를 위한 유효성 검사(합격여부에 따른)
+    private void validatePageNumByPartAndPass(boolean pass, Part part, int pageNum) {
+        int totalPages = (int) Math.ceil(
+                (double) this.applicationRepository.countAllByIsPassAndPart(pass, part) / pageSize);
         if (pageNum < 0 || pageNum >= totalPages) {
             throw new InvalidDataException(INVALID_PAGE_ERROR);
         }
