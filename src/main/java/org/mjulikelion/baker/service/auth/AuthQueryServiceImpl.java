@@ -6,6 +6,7 @@ import static org.mjulikelion.baker.errorcode.ErrorCode.AUTHENTICATION_ERROR;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
+import lombok.extern.slf4j.Slf4j;
 import org.mjulikelion.baker.dto.request.auth.AuthLoginRequestDto;
 import org.mjulikelion.baker.dto.response.ResponseDto;
 import org.mjulikelion.baker.exception.AuthenticationException;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthQueryServiceImpl implements AuthQueryService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -48,12 +50,14 @@ public class AuthQueryServiceImpl implements AuthQueryService {
 
             ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN, JwtEncoder.encodeJwtBearerToken(jwtToken))
                     .maxAge(Duration.ofMillis(cookieMaxAge))
-                    .secure(true)
-                    .sameSite("None")
+                    .sameSite("None").secure(true)
                     .httpOnly(true)
                     .path(ROOT_PATH)
+                    .domain("localhost")
                     .build();
-            response.addHeader("Set-Cookie", cookie.toString());
+            log.info("cookieString: {}", cookie);
+
+            response.addHeader("set-cookie", cookie.toString());
         } catch (Exception e) {
             throw new AuthenticationException(AUTHENTICATION_ERROR, e.getMessage());
         }
