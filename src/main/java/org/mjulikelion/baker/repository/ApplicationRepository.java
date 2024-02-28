@@ -14,4 +14,8 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
     Optional<Application> findByStudentId(String studentId);
 
     Page<Application> findAllByPart(Part part, Pageable pageable);
+
+    Page<Application> findAllByIsPassAndPart(boolean pass, Part partEnum, Pageable pageable);
+
+    Long countAllByIsPassAndPart(boolean pass, Part part);
 }
