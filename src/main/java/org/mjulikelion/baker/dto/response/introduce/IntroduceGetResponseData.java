@@ -9,6 +9,10 @@ import org.mjulikelion.baker.vo.IntroduceDetailVO;
 @Builder
 public class IntroduceGetResponseData {
     @JsonProperty
+    private final String studentId;
+    @JsonProperty
+    private final String name;
+    @JsonProperty
     private final Part part;
     @JsonProperty
     private final List<IntroduceDetailVO> introduceDetailVOList;
