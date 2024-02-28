@@ -77,6 +77,7 @@ public class SecurityConfig {
                                         .sameSite("None")
                                         .maxAge(ZERO)
                                         .path("/")
+                                        .domain("localhost")
                                         .build();
                                 response.addHeader("Set-Cookie", cookie.toString());
 
