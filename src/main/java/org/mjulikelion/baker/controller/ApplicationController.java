@@ -20,4 +20,11 @@ public class ApplicationController {
             @RequestParam(value = "pageNum") int pageNum) {
         return applicationQueryService.getApplications(part, --pageNum);// pageNum은 1부터 시작하니 0부터 시작하는 페이지로 변환
     }
+
+    @GetMapping("/applications/passed")
+    public ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getPassedApplications(
+            @RequestParam(value = "part") String part,
+            @RequestParam(value = "pageNum") int pageNum) {
+        return applicationQueryService.getPassedApplications(part, --pageNum);// pageNum은 1부터 시작하니 0부터 시작하는 페이지로 변환
+    }
 }

@@ -24,6 +24,8 @@ public class ApplicationResponse {
     private Date createdAt;
     @JsonProperty
     private String link;
+    @JsonProperty
+    private boolean isPass;
 
 
     public static ApplicationResponse makeApplicationResponse(Application application) {
@@ -36,6 +38,7 @@ public class ApplicationResponse {
                 .major(application.getMajor().getName())
                 .createdAt(application.getCreatedAt())
                 .link(application.getLink())
+                .isPass(application.isPass())
                 .build();
     }
 }

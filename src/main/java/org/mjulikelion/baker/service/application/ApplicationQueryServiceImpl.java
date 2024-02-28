@@ -25,6 +25,15 @@ public class ApplicationQueryServiceImpl implements ApplicationQueryService {
         return ResponseEntity.ok(ResponseDto.res(HttpStatus.OK, HttpStatus.OK.toString(), responseData));
     }
 
+    @Override
+    public ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getPassedApplications(String part, int pageNum) {
+        Page<Application> applicationPage = this.applicationUtil.getPageApplicationsByPassAndPart(true, part, pageNum);
+
+        ApplicationPageGetResponseData responseData = this.makeApplicationPageGetResponseData(applicationPage, pageNum);
+
+        return ResponseEntity.ok(ResponseDto.res(HttpStatus.OK, HttpStatus.OK.toString(), responseData));
+    }
+
     public ApplicationPageGetResponseData makeApplicationPageGetResponseData(Page<Application> applicationPage,
                                                                              int pageNum) {
         return ApplicationPageGetResponseData.builder()

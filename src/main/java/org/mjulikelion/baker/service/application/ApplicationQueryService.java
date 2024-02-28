@@ -8,4 +8,6 @@ import org.springframework.http.ResponseEntity;
 public interface ApplicationQueryService {
 
     ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getApplications(String part, int pageNum);
+
+    ResponseEntity<ResponseDto<ApplicationPageGetResponseData>> getPassedApplications(String part, int pageNum);
 }
