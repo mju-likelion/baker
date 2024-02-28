@@ -1,8 +1,6 @@
 package org.mjulikelion.baker.controller;
 
-import static org.mjulikelion.baker.constant.RegexPatterns.APPLICATION_STUDENT_ID_PATTERN;
-
-import jakarta.validation.constraints.Pattern;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.mjulikelion.baker.dto.response.ResponseDto;
 import org.mjulikelion.baker.dto.response.introduce.IntroduceGetResponseData;
@@ -19,11 +17,10 @@ public class IntroduceController {
     private final IntroduceQueryService introduceQueryService;
 
     @GetMapping("/introduces")
-    @Cacheable(value = "applicationByStudentId", key = "#studentId")
+    @Cacheable(value = "applicationByApplicationId", key = "#applicationId")
     public ResponseEntity<ResponseDto<IntroduceGetResponseData>> getStudentIntroduce(
-            @RequestParam(value = "studentId")
-            @Pattern(regexp = APPLICATION_STUDENT_ID_PATTERN, message = "학번이 형식에 맞지 않습니다.") String studentId
+            @RequestParam(value = "applicationId") UUID applicationId
     ) {
-        return this.introduceQueryService.getStudentIntroduce(studentId);
+        return this.introduceQueryService.getStudentIntroduce(applicationId);
     }
 }

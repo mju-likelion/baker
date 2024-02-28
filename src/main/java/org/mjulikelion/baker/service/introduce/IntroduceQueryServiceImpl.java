@@ -33,21 +33,23 @@ public class IntroduceQueryServiceImpl implements IntroduceQueryService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<ResponseDto<IntroduceGetResponseData>> getStudentIntroduce(String studentId) {
-        Application application = this.findApplicationByStudentId(studentId);
+    public ResponseEntity<ResponseDto<IntroduceGetResponseData>> getStudentIntroduce(UUID applicationId) {
+        Application application = this.findApplicationById(applicationId);
         List<ApplicationIntroduce> applicationIntroduceList = this.findApplicationIntroduces(application.getId());
         List<IntroduceDetailVO> introduceDetailVOList = this.buildIntroduceDetailVOList(applicationIntroduceList);
 
         IntroduceGetResponseData introduceGetResponseData = IntroduceGetResponseData.builder()
                 .introduceDetailVOList(introduceDetailVOList)
+                .studentId(application.getStudentId())
+                .name(application.getName())
                 .part(application.getPart())
                 .build();
 
         return ResponseEntity.ok(ResponseDto.res(HttpStatus.OK, "OK", introduceGetResponseData));
     }
 
-    private Application findApplicationByStudentId(String studentId) {
-        return this.applicationRepository.findByStudentId(studentId)
+    private Application findApplicationById(UUID applicationId) {
+        return this.applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationNotFoundException(APPLICATION_NOT_FOUND_ERROR));
     }
 
