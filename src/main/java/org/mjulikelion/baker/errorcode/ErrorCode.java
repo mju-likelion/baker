@@ -18,6 +18,8 @@ public enum ErrorCode {
     INVALID_PART_ERROR("4001", "유효하지 않은 파트입니다."),//유효하지 않은 파트
     INVALID_PAGE_ERROR("4002", "페이지가 유효하지 않습니다."),//페이지가 유효하지 않음
     PARAM_NOT_FOUND_ERROR("4003", "필수 파라미터가 누락되었습니다."),//필수 파라미터가 누락됨
+    APPLICATION_ALREADY_PASS_ERROR("4004", "이미 합격한 지원서입니다."),//이미 합격한 지원서
+    APPLICATION_ALREADY_REJECT_ERROR("4005", "이미 불합격한 지원서입니다."),//이미 불합격한 지원서
     //인증/권한 오류들
     AUTHENTICATION_ERROR("4010", "인증 오류입니다."),//인증 오류
     AUTHENTICATION_NOT_FOUND_ERROR("4011", "인증 정보를 찾을 수 없습니다."),//인증 정보를 찾을 수 없음
