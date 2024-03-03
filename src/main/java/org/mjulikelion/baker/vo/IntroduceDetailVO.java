@@ -11,4 +11,6 @@ public class IntroduceDetailVO {
     private final String title;
     @JsonProperty
     private final String content;
+    @JsonProperty
+    private final int maxLength;
 }
