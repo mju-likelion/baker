@@ -77,6 +77,7 @@ public class IntroduceQueryServiceImpl implements IntroduceQueryService {
                         .sequence(introduce.getSequence())
                         .title(introduce.getTitle())
                         .content(introduceMap.get(introduce))
+                        .maxLength(introduce.getMaxLength())
                         .build())
                 .collect(Collectors.toList());
     }
